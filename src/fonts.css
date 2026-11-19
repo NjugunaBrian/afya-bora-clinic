@@ -1,0 +1,4 @@
+/* fonts.css — the faces of this app's look ("Tutor"), written by founding.dev.
+ * Only the families tokens.css names are loaded. @import MUST stay the first
+ * statement (index.css imports this file before anything else). */
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');

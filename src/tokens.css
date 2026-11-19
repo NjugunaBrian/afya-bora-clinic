@@ -1,0 +1,302 @@
+/**
+ * tokens.css — brand design system for this fullstack project.
+ *
+ * Auto-seeded on project creation by founding.dev's tokenSeedService.
+ * Mood: Tutor: encouraging, friendly, simple. Brand: Tutor.
+ *
+ * SHADCN semantic aliases (HSL, wrapped by @theme inline in globals.css):
+ *   --background, --foreground, --primary, --primary-foreground,
+ *   --secondary, --secondary-foreground, --card, --card-foreground,
+ *   --popover, --popover-foreground, --muted, --muted-foreground,
+ *   --accent, --accent-foreground, --destructive, --destructive-foreground,
+ *   --border, --input, --ring, --radius.
+ *
+ * LEGACY --color-brand-* aliases (hex) are kept for backcompat with any
+ * existing hand-written class refs. Prefer shadcn aliases in new code.
+ *
+ * WCAG AA verified at generation time (light theme): primary/primaryFg ≥ 4.5:1,
+ * bg/fg ≥ 4.5:1, bg/muted ≥ 4.5:1, bg/border ≥ 3:1.
+ *
+ * Dark theme: derived from light palette (invert lightness on bg/fg, keep
+ * hues on primary/accent, computed border/muted for dark surfaces). Toggle
+ * via ThemeToggle → adds/removes .dark on <html>.
+ */
+
+:root {
+  /* shadcn semantic aliases (bare HSL triplets — tailwind.config.ts wraps them in hsl()) */
+  --background: 120 20% 99%;
+  --foreground: 87 13% 14%;
+  /* Surface ladder. --card MUST NOT equal --background: when they matched, a
+   * card was only its 1px border and every app read as a wireframe. */
+  --card: 120 20% 97%;
+  --card-foreground: 87 13% 14%;
+  --popover: 120 20% 96%;
+  --popover-foreground: 87 13% 14%;
+  --primary: 86 85% 26%;
+  --primary-foreground: 0 0% 100%;
+  /* --primary is a FILL (its solved pair is --primary-foreground ON it).
+   * --primary-ink is the same brand hue solved for TEXT against every surface
+   * below, so text-primary-ink is always readable where text-primary is not.
+   * Use it for links, eyebrows, stat numerals and icons. */
+  --primary-ink: 87 86% 19%;
+  --secondary: 120 16% 95%;
+  --secondary-foreground: 87 13% 14%;
+  --muted: 120 16% 95%;
+  --muted-foreground: 87 6% 38%;
+  /* --accent is the hover/selected SURFACE (ghost & outline hovers, dropdown /
+   * command / nav-item highlights, table-row hover). A quiet tinted plane, NOT
+   * the vivid brand accent — that lives on as --color-brand-accent (CTAs). */
+  --accent: 85 30% 93%;
+  --accent-foreground: 87 13% 14%;
+  --destructive: 0 80% 44%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 84 8% 88%;
+  --input: 84 8% 88%;
+  --ring: 85 84% 32%;
+  --radius: 14px;
+
+  /* ---------------------------------------------------------------------
+   * Craft tokens. Absent before: this service emitted zero shadow, motion,
+   * tracking and font-feature tokens, which is why generated apps were flat,
+   * motionless and typeset at browser defaults. Values are measured from
+   * shipped design systems, not invented.
+   * ------------------------------------------------------------------- */
+
+  /* Surface ladder, addressable directly for panels/rails that are neither
+   * card nor popover. */
+  --surface-1: 120 20% 97%;
+  --surface-2: 120 20% 96%;
+  --surface-3: 120 20% 94%;
+
+  /* Hairline as a RING, not a border (Vercel Geist's approach:
+   * --ds-shadow-border-base: 0 0 0 1px #00000014). A ring does not affect
+   * layout, composes with elevation in one property, and can be animated. */
+  /* Raw triplet, NOT c(): the c() helper conditionally wraps in hsl() already,
+   * so using it here produced hsl(hsl(...)) and the ring silently did nothing. */
+  --ring-hairline: 0 0 0 1px hsl(84 8% 88% / 0.55);
+
+  /* Elevation ladder — Attio's geometric progression: blur doubles, negative
+   * spread halves, alpha climbs ~1% per level. Rest state is xs or nothing;
+   * a raised card is sm; dropdowns use md; modals use xl. Never stack a
+   * border AND a shadow on the same node. */
+  --shadow-xs: 0 1px 3px 0 rgb(0 0 0 / 0.03);
+  --shadow-sm: 0 2px 4px -1px rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 8px -2px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 8px 16px -4px rgb(0 0 0 / 0.10);
+  --shadow-xl: 0 16px 32px -8px rgb(0 0 0 / 0.13);
+
+  /* PRE-COMPOSED elevations. These exist because Tailwind cannot parse a
+   * top-level comma inside an arbitrary value: shadow-[var(--a),var(--b)]
+   * produces NO css rule, so the class sits in the HTML doing nothing. Measured
+   * on a live app — the class was present on 5 elements, both tokens resolved
+   * correctly, and computed boxShadow was still "none".
+   *
+   * Composing here means a primitive references ONE var and gets hairline +
+   * elevation together, which is also the correct pairing: never stack a border
+   * and a shadow on the same node. */
+  --elevation-flat: 0 0 0 1px hsl(84 8% 88% / 0.55);
+  --elevation-card: 0 0 0 1px hsl(84 8% 88% / 0.55), 0 1px 3px 0 rgb(0 0 0 / 0.03);
+  --elevation-raised: 0 0 0 1px hsl(84 8% 88% / 0.45), 0 2px 4px -1px rgb(0 0 0 / 0.05);
+  --elevation-menu: 0 0 0 1px hsl(84 8% 88% / 0.45), 0 4px 8px -2px rgb(0 0 0 / 0.08);
+  --elevation-modal: 0 0 0 1px hsl(84 8% 88% / 0.4), 0 16px 32px -8px rgb(0 0 0 / 0.13);
+
+  /* Primary-button inset highlight, lifted verbatim from Linear. The highest
+   * "someone designed this" signal per line of CSS. */
+  --shadow-button: inset 0 0 0 1px rgb(255 255 255 / 0.08),
+    inset 0 1px rgb(255 255 255 / 0.10), 0 1px 2px rgb(0 0 0 / 0.10);
+
+  /* NOTE ON RADIUS: this block deliberately does NOT define --radius-sm/md/lg.
+   * They already exist above, derived from the brand's own radius scale, and
+   * re-declaring them here silently overrode the brand values — measured on a
+   * live app where --radius-lg resolved to 16px instead of the 10px emitted
+   * here, because the later duplicate won. Use the brand ladder: sm for
+   * buttons/inputs/badges, md for menu rows, lg for cards and panels. Radius
+   * tied to element size is the point; a single uniform radius is the tell.
+   * Nested rule: inner = outer - padding, biased up 1px because anti-aliasing
+   * reads the exact math tight. */
+
+  /* Motion. Carbon's productive set, which is tuned for dense product UI
+   * rather than marketing. Exits run at ~75% of entry duration. Animate only
+   * transform, opacity, background-color and box-shadow — never width,
+   * height, top/left or filter. */
+  --dur-fast: 100ms;   /* hover, press */
+  --dur-base: 150ms;   /* menus, focus */
+  --dur-slow: 240ms;   /* dialogs, expansion */
+  --ease-out: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  /* Optical tracking by size. Inter's published dynamic-metrics curve is
+   * t = -0.0223 + 0.185 * e^(-0.1745 * px); these are the discrete steps
+   * Linear ships. Costs nothing and immediately reads "typeset". */
+  --tracking-display: -0.022em;  /* >=30px */
+  --tracking-title: -0.012em;    /* 20-29px */
+  --tracking-body: -0.011em;     /* 15-19px */
+  --tracking-small: -0.013em;    /* 14px */
+  --tracking-micro: 0.01em;      /* <=11px, opens up */
+
+  /* Three text levels, not two. Generated UI uses foreground + muted and
+   * nothing between, which flattens hierarchy. */
+  --foreground-secondary: 87 13% 26%;
+
+  /* Chart series — brand-derived (see chartRamp). recharts consumes these via
+   * tailwind colors.chart.1..5 in the starter. */
+  --chart-1: 85 84% 32%;
+  --chart-2: 24 94% 49%;
+  --chart-3: 127 76% 44%;
+  --chart-4: 47 66% 54%;
+  --chart-5: 181 52% 62%;
+
+  /* Legacy --color-brand-* aliases (hex) — kept for backcompat, do not remove.
+   *
+   * The BACKGROUND/identity colours (--color-brand-primary, --color-brand-accent,
+   * --color-bg, --color-fg) carry the brand's RAW hex, deliberately NOT the
+   * canonicalised palette: they are brand identity, which is what a hardcoded var
+   * ref in an existing scratch project expects to find.
+   *
+   * The FOREGROUND colours (*-fg) are the EXCEPTION and carry the CONTRAST-SOLVED
+   * value, not the raw LLM suggestion. These are consumed by the starter's own
+   * primitives — .cta-primary sets color:var(--color-brand-primary-fg) on a
+   * background:var(--color-brand-primary), and an accent CTA reads
+   * var(--color-brand-accent-fg) on the accent — so a foreground here is a TEXT
+   * colour, never identity. Shipping the raw LLM fg is exactly what produced
+   * washed-out (~3:1) and invisible (~1:1) CTAs in the wild: the LLM returns
+   * white-on-a-light-accent and nothing re-checked it. hslRawPrimaryFg /
+   * hslRawAccentFg are solved against rawPalette.primary/.accent — the SAME
+   * colours these --color-brand-* lines paint — so the fg is legible on the real
+   * button background by construction. (Solving against the canonicalized light
+   * palette instead was the dark-on-dark bug: a dark brand primary canonicalizes
+   * to a light primary, so the fg came out dark while the button stayed dark.) */
+  --color-brand-primary: #5c940d;
+  --color-brand-primary-fg: #1f1f1f;
+  --color-brand-accent: #f76707;
+  --color-brand-accent-fg: #24281f;
+  --color-bg: #f8fbf3;
+  --color-fg: #141414;
+  --color-muted: #5c5c58;
+  --color-border: #e0ded8;
+
+  /* Typography */
+  --font-display: 'Lexend', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --type-scale-ratio: 1.25;
+  --font-size-sm: 12px;
+  --font-size-base: 15px;
+  --font-size-1xl: 18.75px;
+  --font-size-2xl: 23.44px;
+  --font-size-3xl: 29.3px;
+  --font-size-4xl: 36.62px;
+  --font-size-5xl: 45.78px;
+
+  /* Radii */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  /* Spacing (4pt scale — Tailwind-compatible) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+}
+
+.dark {
+  --background: 98 29% 5%;
+  --foreground: 98 4% 96%;
+  /* Card comes from the ladder (L13 against the L9 page), not from a ~1.6%
+   * deriveSurface step. On dark surfaces a step that subtle is invisible:
+   * Material 3 separates dark surface (tone 6) from surface-container-low
+   * (tone 10) by 4 points, and Radix dark steps 1->3 by 6. Popover then steps
+   * once more so a menu still reads above a card. */
+  --card: 98 29% 9%;
+  --card-foreground: 98 4% 96%;
+  --popover: 98 29% 12%;
+  --popover-foreground: 98 4% 96%;
+  --primary: 86 85% 26%;
+  --primary-ink: 85 70% 58%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 98 29% 14%;
+  --secondary-foreground: 98 4% 96%;
+  --muted: 98 29% 14%;
+  /* dark.mutedFg, not dark.muted. The old deriveDark overloaded its muted key
+   * to mean the muted FOREGROUND, so this line read the surface-vs-text
+   * distinction backwards the moment the key gained its real meaning. */
+  --muted-foreground: 98 4% 66%;
+  /* Quiet hover/selected SURFACE (see the light block). dark.accent is the
+   * vivid solved brand accent — kept for --color-brand-accent and chart-2, but
+   * never used as the bg-accent hover, which must read as a subtle plane. */
+  --accent: 85 22% 11%;
+  /* Solved against the accent SURFACE, not the page foreground. Assigning
+   * --foreground blindly is the documented bug the surface fix supersedes. */
+  --accent-foreground: 98 4% 96%;
+  --destructive: 0 62% 67%;
+  --destructive-foreground: 0 0% 16%;
+  --border: 98 29% 21%;
+  --input: 98 29% 21%;
+  --ring: 85 84% 32%;
+
+  /* Dark mode needs its OWN surface ladder and elevations, derived from the DARK
+   * background and DARK border.
+   *
+   * These were originally emitted only in :root, so dark mode inherited the
+   * LIGHT theme's values. Measured on a live app: default (no .dark) rendered
+   * body rgb(15,20,26) with card rgb(19,26,32) — a correct dark ladder — but
+   * with .dark applied the body became rgb(230,235,240) while the card stayed
+   * near-black at rgb(17,20,23). A black card on a white page, contrast 15.4:1
+   * between card and page, because --card was overridden here while the
+   * ladder/elevations were not.
+   *
+   * deriveSurface flips direction on its own (it reads the background's
+   * luminance and steps toward the viewer), so passing the dark background is
+   * all that is needed. */
+  --surface-1: 98 29% 7%;
+  --surface-2: 98 29% 8%;
+  --surface-3: 98 29% 10%;
+
+  --ring-hairline: 0 0 0 1px hsl(98 29% 21% / 0.55);
+  --elevation-flat: 0 0 0 1px hsl(98 29% 21% / 0.55);
+  --elevation-card: 0 0 0 1px hsl(98 29% 21% / 0.55), 0 1px 3px 0 rgb(0 0 0 / 0.24);
+  --elevation-raised: 0 0 0 1px hsl(98 29% 21% / 0.45), 0 2px 4px -1px rgb(0 0 0 / 0.32);
+  --elevation-menu: 0 0 0 1px hsl(98 29% 21% / 0.45), 0 4px 8px -2px rgb(0 0 0 / 0.4);
+  --elevation-modal: 0 0 0 1px hsl(98 29% 21% / 0.4), 0 16px 32px -8px rgb(0 0 0 / 0.5);
+
+  /* Shadows must be stronger on dark surfaces: a 3% black shadow is invisible
+   * against a near-black background, which is why the light-mode alphas above
+   * are 0.03-0.13 and these are 0.24-0.5. */
+  --foreground-secondary: 98 4% 81%;
+
+  --chart-1: 85 84% 32%;
+  --chart-2: 24 94% 50%;
+  --chart-3: 127 76% 44%;
+  --chart-4: 47 66% 54%;
+  --chart-5: 181 52% 62%;
+}
+
+/* Element-level rules intentionally omitted: the fullstack starter's
+   index.css applies `@apply bg-background text-foreground font-body` on
+   body, and these variables hold bare HSL triplets (not colors). */
+
+/* sonner richColors, light theme: text darkened to >= 5:1 (defaults are 3.1-4.4:1). */
+:root [data-sonner-toaster][data-theme="light"] {
+  --success-text: hsl(140, 100%, 24%);
+  --info-text: hsl(210, 92%, 41%);
+  --warning-text: hsl(31, 92%, 34%);
+  --error-text: hsl(360, 100%, 41%);
+}
+
+/* Component shape of the "Tutor" look (buttons, inputs, tabs, cards). */
+:root {
+  --control-h: 2.75rem;
+  --control-radius: 999px;
+  --control-weight: 700;
+  --control-case: none;
+  --control-tracking: normal;
+  --card-radius: 20px;
+  --card-border: 0px;
+  --card-shadow: var(--shadow-md);
+}
